@@ -3,9 +3,7 @@ Since the last contest, I did a considerable amount of practice and I was ready 
 __TABLE OF CONTENTS__  
 1) Starting out.  
 2) First attempts.  
-3) Final attempt.  
-4) Language changing.  
-5) Final approach.  
+3) Final attempt.   
 6) Conclustion.  
   
   
