@@ -54,6 +54,60 @@ The reason why search based algorithms are so much better than the basic heurist
 In a search based Artificial Intelligence, there are only 2 components:
 1) The move generation  
 2) The evaluation function.  
+  
+In order to quantitatively analyze a move for the evaluation function, it is also necessary to have a simulation to interpret the end state.  
+  
+==================================================   
+  
+WRITING THE SIMULATION  
+==================================================  
+  
+Most Sims here broadly have the same framework, but there are obviously some contest specific touches.  
+  
+The main components that I identified are :  
+1) Movement of entities.  
+2) Collisions of entities.  
+3) Opponent prediction.  
+  
+1) Entities always move in this way:  
+  
+entity.x += entity.vx;  
+entity.y += entity.vy;   
+entity.vx += thrust * Math.Cos(entity.Angle);  
+entity.vy += thrust * Math.Sin(entity.Angle);  
+   
+On occasion, like in Code vs Zombies, entities moved by a fixed amount every time. In this case, thrust = 0 and entity.vx = amount is enough to modify it properly.  
+  
+2) Collisions of entities.  
+  
+Magus's document explains how to simulate and play out collisions well enough, I will focus on other aspects of entity collisions.  
+  
+The main question in terms of collisions is whether or not to consider them. Earlier, I thought that if you spend more time on simulating / computing / playing out collisions, the more accurate your simulation is.  
+  
+But some benchmarking of performances in the online arena reveals that this is not correct. I added a elapsed_time print to the play(), bounce() and collision() and closest() methods. This revealed that, the closest() and collision() methods take more time considering that they are called a lot more times to see if collisions actually happen.  
+  
+So, collision time does not directly translate lot of accuracy. So it may still be enough to get a good rank. Check how it works in both cases and then decide.  
+   
+3) Opponent prediction.  
+  
+Avoiding opponent prediction gets less and less accurate as you increase the depth of the simulation.  
+  
+So you obviously need an AI to predict the movements, but there are different ways of deciding which AI to use. The ways to go about this are :   
+a) A heuristic AI.  
+b) Your own Search.  
+  
+Using the heuristic AI will be a lot slower as it takes approx 0.1ms per run, that wastes a lot of time, but when you are in lower leagues, it is far more accurate than the search as the opponents may not be that advanced.  
+  
+Normally using the search to work out the opponent's move means running the search assuming that you wait for about 10 -- 15% of the time and using those moves. This is highly accurate in legend, also it is very time efficient.  
+   
+Another idea that I have tried experimenting with running the AIs in alternate short intervals so as to get a much more accurate prediction. The idea behind this, is that it will converge to an ideal solution at infinity runs. But this looks like it runs a very high risk of specialization, so it probably better to use the first approach.  
+  
+
+
+
+
+
+
 
 
 
